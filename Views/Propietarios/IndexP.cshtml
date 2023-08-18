@@ -1,0 +1,76 @@
+@model IEnumerable<Inmobiliaria.Models.Propietarios>
+     
+
+@{
+   
+    ViewData["Title"] = "Propietarios";
+    
+}
+
+
+
+<h1>Lista de Propietarios</h1>
+
+<p>
+   <a asp-action="CrearPropietario" class="btn btn-primary"><i class="fa-solid fa-person-circle-plus fa-xl" style="color: #000000;"></i>Nuevo Propietario</a>
+</p>
+<table class="table">
+    
+    <thead>
+        <tr>
+           
+            <th>
+                
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+              <th>
+                @Html.DisplayNameFor(model => model.Apellido)
+            </th>
+         
+            <th>
+                @Html.DisplayNameFor(model => model.Telefono)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+           
+        
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+         
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apellido)
+            </td>
+         
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+          
+            <td>
+                 <a href='@Url.Action("EditarPropietario", new { id = item.Id })' class="btn btn-sm btn-info">
+										<i class="fa-solid fa-user-pen fa-lg" style="color: #315eaa;"></i>Editar
+
+				</a>
+                  <a href='@Url.Action("DetallePropietario", new { id = item.Id })' class="btn btn-sm btn-info">
+										<i class="fa-solid fa-neuter fa-lg" style="color: #000000;"></i>Detalles
+
+				</a>
+                  <a href='@Url.Action("BorrarPropietario", new { id = item.Id})' class="btn btn-sm btn-danger">
+										<i class="fa-solid fa-user-xmark" style="color: #000000;"></i>Eliminar
+
+				</a>
+       
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
