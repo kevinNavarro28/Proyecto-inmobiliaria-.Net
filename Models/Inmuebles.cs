@@ -19,6 +19,9 @@ public class Inmuebles
     [Required]
     public String ? Direccion { get ; set;}
     public String ? Uso { get ; set;}
+
+    public Double ? Precio {get ; set;}
+    [Display(Name="Cantidad De Ambientes")]
     public int Cantidad_Ambientes { get ; set;}
 
     [Required]

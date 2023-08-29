@@ -49,7 +49,8 @@
         var inquilinoId = Model.InquilinoId;
         var inquilino = listaInquilino.FirstOrDefault(i => i.Id == inquilinoId);
       
-            @inquilino.Nombre
+                 var nombre = inquilino.Nombre+" "+inquilino.Apellido;
+       @nombre;
        
     }
         </dd>

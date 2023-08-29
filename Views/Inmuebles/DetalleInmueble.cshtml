@@ -36,6 +36,12 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Uso)
         </dd>
+          <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Precio)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Precio)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Cantidad_Ambientes)
         </dt>
@@ -69,8 +75,8 @@
         var propietarioId = Model.PropietarioId;
         var propietario = listaPropietario.FirstOrDefault(i => i.Id == propietarioId);
        
-            @propietario.Nombre
-       
+            var nombre = propietario.Nombre+" "+propietario.Apellido;
+       @nombre;
     }
         </dd>
     </dl>

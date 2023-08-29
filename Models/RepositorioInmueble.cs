@@ -18,7 +18,7 @@ public List<Inmuebles>GetInmuebles()
     
     using (MySqlConnection connection = new MySqlConnection(connectionString)) 
     {
-        var query = @"SELECT i.Id,i.Tipo,i.Direccion,i.Uso,i.Cantidad_Ambientes,i.Superficie,i.Latitud,i.Longitud,
+        var query = @"SELECT i.Id,i.Tipo,i.Direccion,i.Uso,i.Precio,i.Cantidad_Ambientes,i.Superficie,i.Latitud,i.Longitud,
         i.PropietarioId,p.Nombre,p.Apellido FROM Inmuebles i INNER JOIN Propietarios p ON i.PropietarioId = p.Id ";
         using(var command = new MySqlCommand(query , connection)){
         connection.Open();
@@ -31,6 +31,7 @@ public List<Inmuebles>GetInmuebles()
                 Tipo = reader.GetString(nameof(Inmuebles.Tipo)),
                 Direccion = reader.GetString(nameof(Inmuebles.Direccion)),
                 Uso = reader.GetString(nameof(Inmuebles.Uso)),
+                Precio = reader.GetInt32(nameof(Inmuebles.Precio)),
                 Cantidad_Ambientes = reader.GetInt32(nameof(Inmuebles.Cantidad_Ambientes)),
                 Superficie = reader.GetInt32(nameof(Inmuebles.Superficie)),                
                 Latitud = reader.GetInt32(nameof(Inmuebles.Latitud)),
@@ -60,7 +61,7 @@ public Inmuebles ObtenerInmueble(int id)
     
     using (MySqlConnection connection = new MySqlConnection(connectionString)) 
     {
-        string sql = @$"SELECT i.Id,i.Tipo,i.Direccion,i.Uso,i.Cantidad_Ambientes,i.Superficie,i.Latitud,i.Longitud,
+        string sql = @$"SELECT i.Id,i.Tipo,i.Direccion,i.Uso,i.Precio,i.Cantidad_Ambientes,i.Superficie,i.Latitud,i.Longitud,
         i.PropietarioId,p.Nombre,p.Apellido FROM inmuebles i INNER JOIN propietarios p ON i.PropietarioId = p.Id
         WHERE i.Id = @Id";
         using(var command = new MySqlCommand(sql , connection)){
@@ -75,6 +76,7 @@ public Inmuebles ObtenerInmueble(int id)
                 Tipo = reader.GetString(nameof(Inmuebles.Tipo)),
                 Direccion = reader.GetString(nameof(Inmuebles.Direccion)),
                 Uso = reader.GetString(nameof(Inmuebles.Uso)),
+                Precio = reader.GetInt32(nameof(Inmuebles.Precio)),
                 Cantidad_Ambientes = reader.GetInt32(nameof(Inmuebles.Cantidad_Ambientes)),
                 Superficie = reader.GetInt32(nameof(Inmuebles.Superficie)),
                 Latitud = reader.GetInt32(nameof(Inmuebles.Latitud)),
@@ -104,13 +106,14 @@ public int Alta(Inmuebles inmuebles){
 int res = 0;
 using(MySqlConnection connection = new MySqlConnection(connectionString))
 {
-    string query = @"INSERT INTO inmuebles (Tipo,Direccion,Uso,Cantidad_Ambientes,Superficie,Latitud,Longitud,PropietarioId )
-    VALUES (@tipo,@direccion,@uso,@cantidad_ambientes,@superficie,@latitud,@longitud,@PropietarioId);
+    string query = @"INSERT INTO inmuebles (Tipo,Direccion,Uso,Precio,Cantidad_Ambientes,Superficie,Latitud,Longitud,PropietarioId )
+    VALUES (@tipo,@direccion,@uso,@precio,@cantidad_ambientes,@superficie,@latitud,@longitud,@PropietarioId);
     SELECT LAST_INSERT_ID();";
     using(MySqlCommand command = new MySqlCommand (query,connection)){
         command.Parameters.AddWithValue("@tipo",inmuebles.Tipo);
         command.Parameters.AddWithValue("@direccion",inmuebles.Direccion);
         command.Parameters.AddWithValue("@uso",inmuebles.Uso);
+        command.Parameters.AddWithValue("@precio",inmuebles.Precio);
         command.Parameters.AddWithValue("@cantidad_ambientes",inmuebles.Cantidad_Ambientes);
         command.Parameters.AddWithValue("@superficie",inmuebles.Superficie);
         command.Parameters.AddWithValue("@latitud",inmuebles.Latitud);
@@ -135,6 +138,7 @@ using(MySqlConnection connection = new MySqlConnection(connectionString))
     tipo= @tipo,
     direccion = @direccion,
     uso = @uso,
+    precio = @precio,
     cantidad_ambientes = @cantidad_ambientes,
     superficie = @superficie,
     latitud = @latitud,
@@ -146,6 +150,7 @@ using(MySqlConnection connection = new MySqlConnection(connectionString))
         command.Parameters.AddWithValue("@tipo",inmueble.Tipo);
         command.Parameters.AddWithValue("@direccion",inmueble.Direccion);
         command.Parameters.AddWithValue("@uso",inmueble.Uso);
+        command.Parameters.AddWithValue("@precio",inmueble.Precio);
         command.Parameters.AddWithValue("@cantidad_ambientes",inmueble.Cantidad_Ambientes);
         command.Parameters.AddWithValue("@superficie",inmueble.Superficie);
         command.Parameters.AddWithValue("@latitud",inmueble.Latitud);
