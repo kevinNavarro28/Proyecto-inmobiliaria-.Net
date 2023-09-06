@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-08-2023 a las 23:01:55
--- Versión del servidor: 10.4.25-MariaDB
--- Versión de PHP: 7.4.30
+-- Tiempo de generación: 06-09-2023 a las 19:34:47
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -34,7 +34,15 @@ CREATE TABLE `contratos` (
   `Monto` double NOT NULL,
   `InmuebleId` int(11) NOT NULL,
   `InquilinoId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `contratos`
+--
+
+INSERT INTO `contratos` (`Id`, `Fecha_Inicio`, `Fecha_Fin`, `Monto`, `InmuebleId`, `InquilinoId`) VALUES
+(13, '2023-08-03 23:07:00', '2024-02-13 23:08:00', 80000, 13, 13),
+(15, '2023-09-12 17:28:00', '0001-01-01 00:00:00', 50000, 16, 14);
 
 -- --------------------------------------------------------
 
@@ -47,12 +55,22 @@ CREATE TABLE `inmuebles` (
   `Tipo` varchar(200) NOT NULL,
   `Direccion` varchar(200) NOT NULL,
   `Uso` varchar(200) NOT NULL,
+  `Precio` double NOT NULL,
   `Cantidad_Ambientes` int(11) NOT NULL,
   `Superficie` int(11) NOT NULL,
   `Latitud` double NOT NULL,
   `Longitud` double NOT NULL,
   `PropietarioId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `inmuebles`
+--
+
+INSERT INTO `inmuebles` (`Id`, `Tipo`, `Direccion`, `Uso`, `Precio`, `Cantidad_Ambientes`, `Superficie`, `Latitud`, `Longitud`, `PropietarioId`) VALUES
+(13, 'Casa', 'San Martin 2340', 'Vivienda', 1000000, 4, 75000, 64890, 87000, 15),
+(14, 'Edificio', 'San Luis 890', 'Comercial', 45000000, 4, 3213, 31231, 312312, 16),
+(16, 'Departamento', '25 de Mayo 2525', 'Vivienda', 37000, 5, 213, 213, 42, 15);
 
 -- --------------------------------------------------------
 
@@ -69,18 +87,16 @@ CREATE TABLE `inquilinos` (
   `Email` varchar(255) NOT NULL,
   `Direccion` varchar(255) NOT NULL,
   `Nacimiento` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `inquilinos`
 --
 
 INSERT INTO `inquilinos` (`Id`, `Nombre`, `Apellido`, `Dni`, `Telefono`, `Email`, `Direccion`, `Nacimiento`) VALUES
-(7, 'Kevin', 'Navarro', 38221467, 2664732138, 'Kevin28@hotmail.com', 'barrio 118 viviendas manzana 23', '1997-01-09 10:25:00'),
-(8, 'Walter ', 'Lopez', 21345678, 2664549812, 'walterLopez@hotmail.com', 'barrio ampia 231', '1986-08-01 11:32:00'),
-(9, 'Marcela', 'Garay', 19781567, 2664890145, 'Marcegaray@hotmail.com', 'barrio san martin 25', '2004-05-19 11:34:00'),
-(10, 'Martin', 'Cepeda', 21345689, 2665098712, 'martin@hotmail.com', 'San Martin 480', '1997-06-18 13:45:00'),
-(11, 'Norma', 'Lucero', 9321781, 2664890167, 'Norma@hotmail.com', 'barrio 23', '2023-08-12 11:41:00');
+(12, 'Juan', 'Romero', 21345987, 2665098712, 'Juan@gmail.com', 'Catamarca 245', '1997-07-08 23:52:00'),
+(13, 'Andrea', 'Suarez', 17123199, 2664789122, 'AndreaSuarez@hotmail.com', 'Buenos Aires 1209', '1998-02-26 20:48:00'),
+(14, 'Fernando', 'Coronel', 21345098, 2664590981, 'Fernando@gmail.com', 'Malvinas 2340', '1992-03-06 12:28:00');
 
 -- --------------------------------------------------------
 
@@ -93,7 +109,14 @@ CREATE TABLE `pagos` (
   `Fecha_Pago` date NOT NULL,
   `Importe` double NOT NULL,
   `ContratoId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `pagos`
+--
+
+INSERT INTO `pagos` (`Id`, `Fecha_Pago`, `Importe`, `ContratoId`) VALUES
+(17, '2023-08-24', 60000, 13);
 
 -- --------------------------------------------------------
 
@@ -110,7 +133,7 @@ CREATE TABLE `propietarios` (
   `Email` varchar(255) NOT NULL,
   `Direccion` varchar(255) NOT NULL,
   `Nacimiento` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `propietarios`
@@ -121,6 +144,30 @@ INSERT INTO `propietarios` (`Id`, `Nombre`, `Apellido`, `Dni`, `Telefono`, `Emai
 (12, 'Esteban', 'Carrizo', 23871982, 2664123456, 'Estecarrizo_12@hotmail.com', 'barrio 23 manzana 1 casa 55', '1997-05-28 03:48:00'),
 (15, 'Pablo', 'Gonzales', 24890178, 2665789019, 'Pablo26@hotmail.com', 'Barrio amep 256', '1986-02-02 23:17:00'),
 (16, 'Pablo', 'Garcia', 31875230, 2667980178, 'Pablo@hotmail.com', 'departamento 3 piso 2', '2022-06-30 11:43:00');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `Id` int(11) NOT NULL,
+  `Nombre` varchar(200) NOT NULL,
+  `Apellido` varchar(200) NOT NULL,
+  `Email` varchar(200) NOT NULL,
+  `Clave` varchar(200) NOT NULL,
+  `Avatarruta` varchar(200) NOT NULL,
+  `Rol` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`Id`, `Nombre`, `Apellido`, `Email`, `Clave`, `Avatarruta`, `Rol`) VALUES
+(30, 'Kevin', 'Navarro', 'Kevin@gmail.com', 'IfmFhIHAaDG1kTO0Lcw1gFyfQnDPCOdlCx2UcNyEH+s=', '/Uploads\\foto_0.jpg', 2),
+(31, 'Andrea', 'Suarez', 'Andrea@gmail.com', 'aSfqPWGLB8BX4qKxtZNEoJCpAik8An7MuzYwdGTDHU4=', '/Uploads\\foto_31.jpg', 1);
 
 --
 -- Índices para tablas volcadas
@@ -161,6 +208,12 @@ ALTER TABLE `propietarios`
   ADD PRIMARY KEY (`Id`);
 
 --
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`Id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -168,31 +221,37 @@ ALTER TABLE `propietarios`
 -- AUTO_INCREMENT de la tabla `contratos`
 --
 ALTER TABLE `contratos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `inmuebles`
 --
 ALTER TABLE `inmuebles`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `inquilinos`
 --
 ALTER TABLE `inquilinos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `pagos`
 --
 ALTER TABLE `pagos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `propietarios`
 --
 ALTER TABLE `propietarios`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- Restricciones para tablas volcadas
@@ -202,14 +261,14 @@ ALTER TABLE `propietarios`
 -- Filtros para la tabla `contratos`
 --
 ALTER TABLE `contratos`
-  ADD CONSTRAINT `contratos_ibfk_1` FOREIGN KEY (`InmuebleId`) REFERENCES `inmuebles` (`Id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `contratos_ibfk_2` FOREIGN KEY (`InquilinoId`) REFERENCES `inquilinos` (`Id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `contratos_ibfk_1` FOREIGN KEY (`InquilinoId`) REFERENCES `inquilinos` (`Id`),
+  ADD CONSTRAINT `contratos_ibfk_2` FOREIGN KEY (`InmuebleId`) REFERENCES `inmuebles` (`Id`);
 
 --
 -- Filtros para la tabla `inmuebles`
 --
 ALTER TABLE `inmuebles`
-  ADD CONSTRAINT `inmuebles_ibfk_1` FOREIGN KEY (`PropietarioId`) REFERENCES `propietarios` (`Id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `inmuebles_ibfk_1` FOREIGN KEY (`PropietarioId`) REFERENCES `propietarios` (`Id`);
 
 --
 -- Filtros para la tabla `pagos`
