@@ -29,14 +29,19 @@ namespace Inmobiliaria.Controllers
             RepoInmueble = new RepositorioInmueble();
             RepoPropietario = new RepositorioPropietario();
         }
-
+        [Authorize]
         // GET: Inmuebles
         public ActionResult IndexIn()
         {
             var listaIn=RepoInmueble.GetInmuebles();
+             ViewBag.Id = TempData["Id"];
+             if (TempData.ContainsKey("Id"))
+				ViewBag.Id = TempData["Id"];
+			if (TempData.ContainsKey("Mensaje"))
+				ViewBag.Mensaje = TempData["Mensaje"];
             return View(listaIn);
         }
-
+        [Authorize]
         // GET: Inmuebles/Details/5
         public ActionResult DetalleInmueble(int id)
         {
@@ -45,7 +50,7 @@ namespace Inmobiliaria.Controllers
 
             return View(inmueble);
         }
-
+        [Authorize]
         // GET: Inmuebles/Create
         public ActionResult CrearInmueble()
 
@@ -62,6 +67,7 @@ namespace Inmobiliaria.Controllers
         
         }
 
+        [Authorize]
         // POST: Inmuebles/Create
         [HttpPost]
         
@@ -70,6 +76,7 @@ namespace Inmobiliaria.Controllers
             try
             {
                 int res = RepoInmueble.Alta(inmuebles);
+                 TempData["Id"] =res;
                 if(res>0){
                     return RedirectToAction(nameof(IndexIn));
                 }
@@ -84,7 +91,7 @@ namespace Inmobiliaria.Controllers
                 throw;
             }
         }
-
+        [Authorize]
         // GET: Inmuebles/Edit/5
         public ActionResult EditarInmueble(int id)
 
@@ -93,7 +100,7 @@ namespace Inmobiliaria.Controllers
             var inmueble = RepoInmueble.ObtenerInmueble(id);
             return View(inmueble);
         }
-
+        [Authorize]
         // POST: Inmuebles/Edit/5
         [HttpPost]
       
@@ -102,6 +109,7 @@ namespace Inmobiliaria.Controllers
             try
             {
                RepoInmueble.Modificar(inmueble);
+               TempData["Mensaje"] = "El Inmueble se actualizo correctamente.";
 
                 return RedirectToAction(nameof(IndexIn));
             }
@@ -110,7 +118,7 @@ namespace Inmobiliaria.Controllers
                 throw;
             }
         }   
-      
+        [Authorize(Policy ="Administrador")]
         // GET: Inmuebles/Delete/5
         public ActionResult BorrarInmueble(int id)
         {   
@@ -118,7 +126,7 @@ namespace Inmobiliaria.Controllers
             var inmueble = RepoInmueble.ObtenerInmueble(id);
             return View(inmueble);
         }
-       
+        [Authorize(Policy ="Administrador")]
         // POST: Inmuebles/Delete/5
         [HttpPost]
        

@@ -16,7 +16,7 @@ public class Inmuebles
 
     public String ? Tipo { get ; set;}
 
-    [Required]
+    [Required][Display (Name ="Dirección")]
     public String ? Direccion { get ; set;}
     public String ? Uso { get ; set;}
 

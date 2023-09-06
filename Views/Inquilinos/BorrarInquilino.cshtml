@@ -64,6 +64,6 @@
     <form asp-action="BorrarInquilino">
         
          <a asp-action="IndexI"><i class="fa-solid fa-left-long fa-2xl" style="color: #005eff;"></i></a> |
-         <input type="submit" value="Borrar" class="btn btn-danger" /> 
+         <input type="submit" value="Eliminar" class="btn btn-danger"onclick="return confirm('¿Seguro que desea borrar a @Model.Nombre? ')" /> 
     </form>
 </div>

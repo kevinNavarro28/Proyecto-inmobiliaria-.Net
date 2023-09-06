@@ -1,0 +1,38 @@
+@model Inmobiliaria.Models.Pagos
+
+@{
+    ViewData["Title"] = "BorrarPago";
+}
+
+<h1>Borrar Pago</h1>
+
+
+<div>
+    <h4>Pagos</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Importe)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Importe)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ContratoId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ContratoId)
+        </dd>
+    </dl>
+    
+    <form asp-action="BorrarPago">
+        <input type="submit" value="Eliminar" class="btn btn-danger"onclick="return confirm('¿Seguro que deseas borrar el pago @Model.Id? ')" /> |
+        <a asp-action="IndexP"><i class="fa-solid fa-left-long fa-2xl" style="color: #005eff;"></i></a> 
+    </form>
+</div>

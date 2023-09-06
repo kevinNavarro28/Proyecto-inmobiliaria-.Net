@@ -14,12 +14,19 @@ public class HomeController : Controller
     }
 
     public IActionResult Index()
-    {
+    
+    { ViewBag.Id = TempData["Id"];
+            if (TempData.ContainsKey("Mensaje")){
+                ViewBag.Mensaje = TempData["Mensaje"];
+            }
         return View();
     }
 
-    public IActionResult Privacy()
+    public IActionResult Login()
     {
+        return View();
+    }
+    public IActionResult Restringido(){
         return View();
     }
 

@@ -84,7 +84,7 @@
     
      <form asp-action="BorrarInmueble">
       
-         <input type="submit" value="Borrar" class="btn btn-danger" /> |
+         <input type="submit" value="Eliminar" class="btn btn-danger"onclick="return confirm('¿Seguro que desea borrar el inmueble con direccion en @Model.Direccion? ')" /> |
           <a asp-action="IndexIn"><i class="fa-solid fa-left-long fa-2xl" style="color: #005eff;"></i></a> 
     </form>
 </div>

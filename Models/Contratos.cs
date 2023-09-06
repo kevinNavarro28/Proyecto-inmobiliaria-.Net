@@ -11,8 +11,9 @@ public class Contratos
 {   
     [Display(Name ="Numero de Contrato")]
     public int Id {get ; set;}
+    [Display (Name ="Fecha Inicial")]
     public DateTime Fecha_Inicio {get ; set;}
-
+    [Display (Name ="Fecha Final")]
     public DateTime Fecha_Fin {get ; set;}
 
     public Double Monto {get ; set;}

@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Inmobiliaria.Models;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,28 +25,35 @@ namespace inmobiliaria.Controllers
             Repo = new RepositorioPropietario();
 
         }
+        [Authorize]
         // GET: Propietarios
         public IActionResult IndexP()
         {   
             var lista = Repo.GetPropietarios();
+             ViewBag.Id = TempData["Id"];
+            if (TempData.ContainsKey("Id"))
+				ViewBag.Id = TempData["Id"];
+			if (TempData.ContainsKey("Mensaje"))
+				ViewBag.Mensaje = TempData["Mensaje"];
             return View(lista);
             
         }
 
+        [Authorize]
         // GET: Propietarios/Details/5
         public IActionResult DetallePropietario(int id)
         {
             var inquilino = Repo.ObtenerPropietario(id);
             return View(inquilino);
         }
-
+        [Authorize]
         // GET: Propietarios/Create
         public IActionResult CrearPropietario()
         {
             return View();
         }
       
-
+        [Authorize]
         // POST: Propietarios/Create
         [HttpPost]
        
@@ -56,6 +63,7 @@ namespace inmobiliaria.Controllers
             {
                 
             int res = Repo.Alta(propietario);
+             TempData["Id"] = res;
             if(res> 0 )
             {
                 return RedirectToAction(nameof(IndexP));
@@ -72,7 +80,7 @@ namespace inmobiliaria.Controllers
                 return View();
             }
         }
-
+        [Authorize]
         // GET: Propietarios/Edit/5
         public IActionResult EditarPropietario(int id)
         {
@@ -81,13 +89,14 @@ namespace inmobiliaria.Controllers
         }
 
         // POST: Propietarios/Edit/5
-
+        [Authorize]
         [HttpPost]
         public IActionResult EditarPropietario(int id, Propietarios propietario)
         {
             try
             {
               Repo.Modificar(propietario);
+              TempData["Mensaje"] = "El Propietario se actualizo correctamente.";
 
                 return RedirectToAction(nameof(IndexP));
             }
@@ -97,14 +106,14 @@ namespace inmobiliaria.Controllers
             }
         }
 
-       
+        [Authorize(Policy ="Administrador")]
         // GET: Propietarios/Delete/5
         public IActionResult BorrarPropietario(int id)
         {
           var propietarios = Repo.ObtenerPropietario(id);
             return View(propietarios);
         }
-     
+        [Authorize(Policy ="Administrador")]
         // POST: Propietarios/Delete/5
         [HttpPost]
         public IActionResult BorrarPropietario(int id, IFormCollection collection)

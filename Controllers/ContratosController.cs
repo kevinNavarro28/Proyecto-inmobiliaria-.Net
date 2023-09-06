@@ -35,17 +35,22 @@ namespace Inmobiliaria.Controllers
         RepoInquilino = new RepositorioInquilino();
 
     }
-        
+        [Authorize]
         // GET: Contratos
             public ActionResult IndexC()
 
         { var listaContratos = RepoContratos.GetContratos();
                 ViewBag.Inmuebles = RepoInmueble.GetInmuebles();
                 ViewBag.Inquilinos = RepoInquilino.GetInquilinos();
+                ViewBag.Id = TempData["Id"];
+              if (TempData.ContainsKey("Id"))
+				ViewBag.Id = TempData["Id"];
+			if (TempData.ContainsKey("Mensaje"))
+				ViewBag.Mensaje = TempData["Mensaje"];
 
             return View(listaContratos);
         }
-       
+        [Authorize]
         // GET: Contratos/Details/5
         public ActionResult DetalleContrato(int id)
         {
@@ -54,7 +59,7 @@ namespace Inmobiliaria.Controllers
             ViewBag.Inquilinos = RepoInquilino.GetInquilinos();
             return View(contrato);
         }
-     
+        [Authorize]
         // GET: Contratos/Create
         public ActionResult CrearContrato()
 
@@ -72,7 +77,7 @@ namespace Inmobiliaria.Controllers
             }
         
         }
-      
+        [Authorize]
         // POST: Contratos/Create
         [HttpPost]
        
@@ -81,6 +86,7 @@ namespace Inmobiliaria.Controllers
             try
             {
                 int res = RepoContratos.Alta(contratos);
+                 TempData["Id"] = res;
                 if(res>0){
                     return RedirectToAction(nameof(IndexC));
                 }
@@ -95,7 +101,7 @@ namespace Inmobiliaria.Controllers
                 throw;
             }
         }
-        
+        [Authorize]
         // GET: Contratos/Edit/5
         public ActionResult EditarContrato(int id)
         {       ViewBag.Inmuebles = RepoInmueble.GetInmuebles();
@@ -107,12 +113,13 @@ namespace Inmobiliaria.Controllers
        
         // POST: Contratos/Edit/5
         [HttpPost]
-        
+        [Authorize]
         public ActionResult EditarContrato(int id, Contratos contratos)
         {
            try
             {
                RepoContratos.Modificar(contratos);
+               TempData["Mensaje"] = "El Inmueble se actualizo correctamente.";
 
                 return RedirectToAction(nameof(IndexC));
             }
@@ -121,7 +128,7 @@ namespace Inmobiliaria.Controllers
                 throw;
             }
         }
-        
+        [Authorize(Policy ="Administrador")]
         // GET: Contratos/Delete/5
         public ActionResult BorrarContrato(int id)
         {   
@@ -132,8 +139,9 @@ namespace Inmobiliaria.Controllers
         }
        
         // POST: Contratos/Delete/5
+        [Authorize(Policy ="Administrador")]
         [HttpPost]
-       
+
         public ActionResult BorrarContrato(int id, IFormCollection collection)
         {
            try

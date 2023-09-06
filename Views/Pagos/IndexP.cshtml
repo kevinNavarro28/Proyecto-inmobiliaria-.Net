@@ -1,0 +1,54 @@
+@model IEnumerable<Inmobiliaria.Models.Pagos>
+
+@{
+    ViewData["Title"] = "IndexP";
+}
+
+<h1>Lista de Pagos</h1>
+
+<p>
+    <a asp-action="CrearPAgo" class="btn btn-primary"><i class="fa-solid fa-cash-register"></i>Realizar Pago</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Importe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContratoId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Importe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContratoId)
+            </td>
+            <td>
+               <a href='@Url.Action("EditarPago", new { id = item.Id })' class="btn btn-sm btn-info">
+										<i class="fa-solid fa-money-bill-wave"></i>Editar Pago
+
+				</a>
+                  <a href='@Url.Action("DetallePago", new {id = item.Id})' class="btn btn-sm btn-info">
+										<i class="fa-solid fa-money-bill-wave"></i>Detalles Pagos
+
+				</a>
+                  <a href='@Url.Action("BorrarPago", new {id = item.Id})' class="btn btn-sm btn-danger">
+										<i class="fa-solid fa-money-bill-wave"></i>Eliminar Pago
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

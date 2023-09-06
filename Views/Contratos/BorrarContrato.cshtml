@@ -54,7 +54,7 @@
     </dl>
     
     <form asp-action="BorrarContrato">
-        <input type="submit" value="Borrar" class="btn btn-danger" /> |
+        <input type="submit" value="Eliminar" class="btn btn-danger" onclick="return confirm('¿Seguro que desea borrar este Contrato @Model.Id? ')"/> |
        <a asp-action="IndexC"><i class="fa-solid fa-left-long fa-2xl" style="color: #005eff;"></i></a> 
     </form>
 </div>

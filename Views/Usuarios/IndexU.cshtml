@@ -1,0 +1,78 @@
+@model IEnumerable<Inmobiliaria.Models.Usuarios>
+
+@{
+    ViewData["Title"] = "IndexU";
+    var mensaje = TempData["Mensaje"] as string;
+}
+
+<h1>Listado de Usuarios </h1>
+
+    <script>
+        $(document).ready(function () {
+            $('#mensajeModal').modal('show'); 
+        });
+    </script>
+
+
+<p>
+    <a asp-action="CrearUsuario" class="btn btn-primary"><i class="fa-solid fa-person-circle-plus fa-xl" style="color: #000000;"></i>Crear Usuario</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Avatarruta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rol)
+            </th>
+         
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+           
+            <td>
+                @if(item.Avatarruta!=""||item.Avatarruta == null){
+                    <img src="@Html.DisplayFor(modelItem => item.Avatarruta)" alt="Avataruta" style="width:50px ; height:50px;" > 
+                }else{
+                    <img src="/Uploads\sinfoto.jpg" alt="Avataruta" style="width:50px ; height:50px;" >
+                }</td>
+               <td>
+				@Html.DisplayFor(modelItem => item.RolNombre)
+			</td> 
+            
+            
+            
+            <td>
+                <a href='@Url.Action("EditarUsuario", new { id = item.Id })' class="btn btn-sm btn-info">
+										<i class="fa-solid fa-user-pen fa-lg" style="color: #315eaa;"></i>Editar 
+
+				</a>
+                  <a href='@Url.Action("DetalleUsuario", new { id = item.Id })' class="btn btn-sm btn-info">
+										<i class="fa-solid fa-neuter fa-lg" style="color: #000000;"></i>Detalles 
+
+				</a>
+                  <a href='@Url.Action("BorrarUsuario", new { id = item.Id})' class="btn btn-sm btn-danger">
+										<i class="fa-solid fa-user-xmark" style="color: #000000;"></i>Eliminar
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
