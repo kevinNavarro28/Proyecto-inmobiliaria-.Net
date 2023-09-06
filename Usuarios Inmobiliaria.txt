@@ -2,10 +2,6 @@ Correo :Kevin@gmail.com
 Clave:1234
 administrador
 
-correo:Walter@gmail.com
-clave:0987
-Empleado
-
 correo:Andrea@gmail.com
 clave:4321
 Empleado
