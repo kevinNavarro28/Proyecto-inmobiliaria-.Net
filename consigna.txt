@@ -1,0 +1,37 @@
+La presentación del proyecto “Inmobiliaria” se hará por reunión por zoom individualmente con cada estudiante.
+
+Las presentaciones serán el 14/9 y el 15/9 en horarios a convenir con cada uno.
+
+En caso de no aprobar o querer mejorar la nota, la recuperación será en la semana del 18/9 al 22/9 en horarios a convenir.
+
+El proyecto realizado hasta la última entrega tiene una nota base de 6 y vale para regularizar la materia.
+
+Sintetizando lo pedido hasta la última entrega, serían los siguientes puntos:
+
+ABM de Propietarios.
+ABM de Inquilinos.
+ABM de Inmuebles.
+ABM de Contratos.
+ABM de Pagos.
+ABM de Usuarios. Se debe distinguir entre los roles de administradores y empleados. Solo los administradores pueden gestionar otros usuarios (ABM).
+Edición de perfil para el usuario logueado. Permitir cambiar contraseña y foto de perfil.
+Uso de autenticación para poder operar (login).
+Uso de políticas de autorización para limitar las bajas exclusivamente al rol "Administrador"
+Para promocionar se debe obtener una nota de 7 o más. Para ello, completar los siguientes puntos:
+
+Listar los inmuebles que estén disponibles (estado disponible, no por fechas) y su dueño.
+Listar todos los inmuebles que le correspondan a un propietario.
+Listar todos los contratos de alquiler que se encuentren vigentes (por fechas desde/hasta).
+Listar todos los contratos de un inmueble en particular.
+Listar los pagos realizados para un contrato en particular. Permitir cargar un nuevo pago a ese contrato desde la pantalla del listado.
+Dadas dos fechas posibles de un contrato (inicio y fin), listar todos los inmuebles que no estén ocupados en algún contrato entre esas fechas.
+Controlar que no existe superposición de fechas de contratos al crear/editar contratos.
+Permitir renovar contratos.
+Permitir terminar tempranamente contratos indicando la multa.
+Usabilidad para el usuario, como menú de navegación, listados con datos representativos, nombres de campos apropiados, ortografía, accesos directos, notificaciones (resultado de operaciones y errores entre otras), validaciones de datos, etc.
+Se debe entregar:
+
+Diagrama de entidad-relación o de clases completo. Incluir en el repositorio.
+Repositorio git con el proyecto. Debe ser público. Incluir gitignore para que no se incluyan los archivos compilados (bin y obj).
+Base de datos actualizada. Incluir script en el repositorio.
+Usuario y contraseña de un administrador y de un empleado.

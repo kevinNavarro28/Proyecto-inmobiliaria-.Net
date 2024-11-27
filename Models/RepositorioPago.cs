@@ -57,7 +57,7 @@ public Pagos ObtenerPago(int Id)
         FROM pagos
         WHERE Id = @Id";
         using(var command = new MySqlCommand(query , connection)){
-            command.Parameters.AddWithValue("@Id", Id);
+        command.Parameters.AddWithValue("@Id", Id);
         connection.Open();
         using (var reader = command.ExecuteReader()){
             if(reader.Read())
@@ -81,6 +81,41 @@ public Pagos ObtenerPago(int Id)
     return res;  
 
 }
+
+public List<Pagos> ObtenerPagosPorContrato(int ContratoId)
+    {
+        var pagos = new List<Pagos>();
+
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            connection.Open();
+
+            string query = "SELECT Id, Fecha_pago, Importe, ContratoId FROM Pagos WHERE ContratoId = @ContratoId";
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.Add(new MySqlParameter("@ContratoId", ContratoId)); 
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var pago = new Pagos
+                        {
+                            Id = reader.GetInt32(nameof(Pagos.Id)),
+                            Fecha_Pago = reader.GetDateTime(nameof(Pagos.Fecha_Pago)),
+                            Importe = reader.GetInt32(nameof(Pagos.Importe)),
+                            ContratoId = reader.GetInt32(nameof(Pagos.ContratoId))
+                        };
+                        pagos.Add(pago);
+                    }
+                }
+            }
+        }
+
+        return pagos;
+    }
+
+
 
 public int Alta(Pagos pagos){
 int res = 0;

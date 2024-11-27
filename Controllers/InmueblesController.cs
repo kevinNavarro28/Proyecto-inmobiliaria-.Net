@@ -25,9 +25,12 @@ namespace Inmobiliaria.Controllers
         private readonly RepositorioInmueble RepoInmueble;
         private readonly RepositorioPropietario RepoPropietario;
 
+        private readonly RepositorioContrato RepoContrato;
+
         public InmueblesController(){
             RepoInmueble = new RepositorioInmueble();
             RepoPropietario = new RepositorioPropietario();
+            RepoContrato = new RepositorioContrato();
         }
         [Authorize]
         // GET: Inmuebles
@@ -41,6 +44,12 @@ namespace Inmobiliaria.Controllers
 				ViewBag.Mensaje = TempData["Mensaje"];
             return View(listaIn);
         }
+        [Authorize]
+        public ActionResult ContratosPorInmueble(int InmuebleId)
+        {
+            var contratos = RepoContrato.ObtenerContratosPorInmueble(InmuebleId);
+            return View(contratos);
+            }
         [Authorize]
         // GET: Inmuebles/Details/5
         public ActionResult DetalleInmueble(int id)
@@ -91,6 +100,19 @@ namespace Inmobiliaria.Controllers
                 throw;
             }
         }
+
+        [Authorize]
+        public ActionResult ObtenerDisponibles(){
+
+             ViewBag.Propietarios = RepoPropietario.GetPropietarios();
+             var res = RepoInmueble.ObtenerDisponibles();
+                        
+          
+            return View(res);
+            
+        }
+
+
         [Authorize]
         // GET: Inmuebles/Edit/5
         public ActionResult EditarInmueble(int id)

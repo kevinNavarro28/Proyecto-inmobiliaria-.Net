@@ -66,7 +66,7 @@ namespace Inmobiliaria.Controllers
 				{
 					string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
 						password: login.Clave,
-						salt: System.Text.Encoding.ASCII.GetBytes("password"),
+						salt: System.Text.Encoding.ASCII.GetBytes("lasalhacemalenmuchacantidad"),
 						prf: KeyDerivationPrf.HMACSHA1,
 						iterationCount: 1000,
 						numBytesRequested: 256 / 8));
@@ -82,6 +82,7 @@ namespace Inmobiliaria.Controllers
 					var claims = new List<Claim>
 					{
 						new Claim(ClaimTypes.Name, e.Email),
+                       
 						new Claim("FullName", e.Nombre + " " + e.Apellido),
 						new Claim(ClaimTypes.Role, e.RolNombre),
 					};
@@ -151,7 +152,7 @@ namespace Inmobiliaria.Controllers
                 
                 string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                         password: usuarios.Clave,
-                        salt: System.Text.Encoding.ASCII.GetBytes("password"),
+                        salt: System.Text.Encoding.ASCII.GetBytes("lasalhacemalenmuchacantidad"),
                         prf: KeyDerivationPrf.HMACSHA1,
                         iterationCount: 1000,
                         numBytesRequested: 256 / 8));
@@ -237,7 +238,7 @@ namespace Inmobiliaria.Controllers
                 {
                     string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                             password: usuarios.Clave,
-                            salt: System.Text.Encoding.ASCII.GetBytes("password"),
+                            salt: System.Text.Encoding.ASCII.GetBytes("lasalhacemalenmuchacantidad"),
                             prf: KeyDerivationPrf.HMACSHA1,
                             iterationCount: 1000,
                             numBytesRequested: 256 / 8
@@ -291,6 +292,25 @@ namespace Inmobiliaria.Controllers
 
                 RepoUsuario.ModificarP(usuarios);
                 ViewBag.Roles = Usuarios.ObtenerRoles();
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, usuarios.Email),
+                    new Claim("FullName", $"{usuarios.Nombre} {usuarios.Apellido}"),
+                    new Claim(ClaimTypes.Role, usuarios.RolNombre),
+                    
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(claimsIdentity);
+
+                         // Renueva el ticket de autenticación
+                HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
+                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal).Wait();
+
+
+
+
                 TempData["Mensaje"] = "El usuario se actualizo correctamente.";
                 return RedirectToAction(nameof(IndexU));
             }
@@ -307,13 +327,8 @@ namespace Inmobiliaria.Controllers
         public ActionResult EditarPerfil(int id, Usuarios usuarioE)
         {
             var usuario = RepoUsuario.ObtenerUsuarioPorEmail(User.Identity.Name);
-           
-            
             try
             {
-                
-                
-
                 if (usuarioE.Clave == null || usuarioE.Clave == "")
                 {
                     usuarioE.Clave = usuario.Clave;
@@ -322,7 +337,7 @@ namespace Inmobiliaria.Controllers
                 {
                     string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                             password: usuarioE.Clave,
-                            salt: System.Text.Encoding.ASCII.GetBytes("password"),
+                            salt: System.Text.Encoding.ASCII.GetBytes("lasalhacemalenmuchacantidad"),
                             prf: KeyDerivationPrf.HMACSHA1,
                             iterationCount: 1000,
                             numBytesRequested: 256 / 8
@@ -378,6 +393,21 @@ namespace Inmobiliaria.Controllers
              
                  RepoUsuario.ModificarP(usuarioE);
                 ViewBag.Roles = Usuarios.ObtenerRoles();
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, usuarioE.Email),
+                    new Claim("FullName", $"{usuarioE.Nombre} {usuarioE.Apellido}"),
+                    new Claim(ClaimTypes.Role, usuarioE.RolNombre),
+                    
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(claimsIdentity);
+
+                         // Renueva el ticket de autenticación
+                HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
+                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal).Wait();
                 TempData["Mensaje"] = "Su perfil ha sido actualizado correctamente.";
                 return RedirectToAction(nameof(Index), "Home");
             }   

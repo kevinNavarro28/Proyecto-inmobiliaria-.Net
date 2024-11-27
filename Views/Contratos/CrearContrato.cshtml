@@ -18,25 +18,25 @@
             
                 <div class="form-group">
                 <label asp-for="Fecha_Inicio" class="control-label"></label>
-                <input asp-for="Fecha_Inicio" class="form-control" />
+                <input asp-for="Fecha_Inicio" id="Fecha_Inicio" class="form-control" type="date" onchange="actualizarInmuebles()"required/>
                 <span asp-validation-for="Fecha_Inicio" class="text-danger"></span>
             </div>
                 <div class="form-group">
                 <label asp-for="Fecha_Fin" class="control-label"></label>
-                <input asp-for="Fecha_Fin" class="form-control" />
+                <input asp-for="Fecha_Fin" id="Fecha_Fin" class="form-control" type="date" onchange="actualizarInmuebles()"required/>
                 <span asp-validation-for="Fecha_Fin" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Monto" class="control-label"></label>
-                <input asp-for="Monto" class="form-control" />
+                <input asp-for="Monto" class="form-control" type="number"required/>
                 <span asp-validation-for="Monto" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="InmuebleId" class="control-label"></label>
-                <select name="InmuebleId" class="form-contro">
+                <label asp-for="InmuebleId" class="control-label"></label><br>
+                <select name="InmuebleId" class="form-control" required>
                     @foreach (var item in listaInmueble)
                     {
-                       <option value="@item.Id">@(item.Tipo+" "+item.Direccion)</option> 
+                       <option value="@item.Id">@(item.Tipo+" - "+item.Direccion)</option> 
                     }
                     
                 </select>
@@ -44,7 +44,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="InquilinoId" class="control-label"></label>
-                <select name="InquilinoId" class="form-control">
+                <select name="InquilinoId" class="form-control" required>
                     @foreach (var item in listaInquilino)
                     {
                         <option value="@item.Id">@(item.Nombre+" "+item.Apellido) </option>
@@ -62,4 +62,39 @@
 <div>
       <a asp-action="IndexC"><i class="fa-solid fa-left-long fa-2xl" style="color: #005eff;"></i></a> 
 </div>
+<script src="wwwroot/js/site.js"></script>
+
+<script>
+    function actualizarInmuebles() {
+        const fechaInicio = document.getElementById('Fecha_Inicio').value;
+        const fechaFin = document.getElementById('Fecha_Fin').value;
+
+        if (fechaInicio && fechaFin) {
+            // Llamada AJAX para obtener inmuebles disponibles
+            fetch(`/Contratos/ObtenerInmueblesDisponibles?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
+                .then(response => response.json())
+                .then(data => {
+                    const selectInmuebles = document.querySelector("select[name='InmuebleId']");
+        
+                    // Limpiar el select
+                    selectInmuebles.innerHTML = "";// Limpiar opciones existentes
+
+                    // Agregar las nuevas opciones
+                    data.forEach(inmueble => {
+                        const option = document.createElement('option');
+                        option.value = inmueble.id;
+                        option.textContent = `${inmueble.tipo} - ${inmueble.direccion}`;
+                       selectInmuebles.appendChild(option);
+                       
+                    });
+                    
+                })
+                .catch(error => console.error('Error al obtener inmuebles:', error));
+        }
+        
+        
+    }
+</script>
+
+
 

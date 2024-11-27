@@ -2,13 +2,26 @@
 
 @{
     ViewData["Title"] = "IndexP";
+    
 }
 
-<h1>Lista de Pagos</h1>
 
-<p>
-    <a asp-action="CrearPAgo" class="btn btn-primary"><i class="fa-solid fa-cash-register"></i>Realizar Pago</a>
-</p>
+<h1>Lista de Pagos</h1>
+@if (!string.IsNullOrEmpty(ViewBag.Mensaje as string))
+{
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <strong>Información:</strong> @ViewBag.Mensaje
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+
+<a asp-controller="Pagos"asp-action="NuevoPago" asp-route-ContratoId="@ViewBag.ContratoId" class="btn btn-primary">Nuevo Pago</a>
+
+
+
 <table class="table">
     <thead>
         <tr>
@@ -36,16 +49,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ContratoId)
             </td>
-            <td>
-              
-                  <a href='@Url.Action("DetallePago", new {id = item.Id})' class="btn btn-sm btn-info">
-										<i class="fa-solid fa-money-bill-wave"></i>Detalles Pagos
-
-				</a>
-                  <a href='@Url.Action("BorrarPago", new {id = item.Id})' class="btn btn-sm btn-danger">
-										<i class="fa-solid fa-money-bill-wave"></i>Eliminar Pago
-            </td>
+           
+           
         </tr>
 }
     </tbody>
 </table>
+<div>
+    <a asp-action="IndexC"><i class="fa-solid fa-left-long fa-2xl" style="color: #005eff;"></i></a>
+</div>

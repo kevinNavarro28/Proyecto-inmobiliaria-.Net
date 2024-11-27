@@ -1,0 +1,30 @@
+@model IEnumerable<Inmobiliaria.Models.Contratos>
+
+<h1>Contratos del Inmueble</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Número de Contrato</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Monto</th>
+            <th>Inquilino</th>
+            <th>Inmueble</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var contratos in Model)
+    {
+        <tr>
+            <td>@contratos.Id</td>
+            <td>@contratos.Fecha_Inicio.ToString("dd/MM/yyyy")</td>
+            <td>@contratos.Fecha_Fin.ToString("dd/MM/yyyy")</td>
+            <td>$@contratos.Monto</td>
+            <td>@contratos.inquilino.Nombre @contratos.inquilino.Apellido</td>
+            <td>@contratos.inmueble.Direccion</td>
+        </tr>
+    }
+    </tbody>
+</table>
+ <a asp-action="IndexIn"><i class="fa-solid fa-left-long fa-2xl" style="color: #005eff;"></i></a> 
+</div>

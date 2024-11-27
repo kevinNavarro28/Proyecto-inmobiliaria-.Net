@@ -20,15 +20,18 @@ namespace inmobiliaria.Controllers
     public class PropietariosController : Controller
     {   
         private readonly RepositorioPropietario Repo;
+        private readonly RepositorioInmueble RepoInmueble;
 
         public PropietariosController(){
             Repo = new RepositorioPropietario();
+            RepoInmueble = new RepositorioInmueble();
 
         }
         [Authorize]
         // GET: Propietarios
         public IActionResult IndexP()
         {   
+            
             var lista = Repo.GetPropietarios();
              ViewBag.Id = TempData["Id"];
             if (TempData.ContainsKey("Id"))
@@ -37,6 +40,13 @@ namespace inmobiliaria.Controllers
 				ViewBag.Mensaje = TempData["Mensaje"];
             return View(lista);
             
+        }
+
+        [Authorize]
+        public IActionResult ObtenerInmueblesPorPropietario(int Id){
+            ViewBag.Propietario = Repo.ObtenerPropietario(Id);
+            var lista = RepoInmueble.ObtenerInmueblesPorPropietario(Id);
+             return View(lista);
         }
 
         [Authorize]

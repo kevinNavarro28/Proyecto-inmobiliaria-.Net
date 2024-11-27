@@ -6,6 +6,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace Inmobiliaria.Models;
+public enum enTipo{
+    Local = 1,
+    Depósito = 2,
+
+    Casa = 3,
+
+    Departamento = 4,
+}
+public enum enUso{
+    Empleado = 1,
+    Administrador = 2,
+}
 
 
 
@@ -31,6 +43,8 @@ public class Inmuebles
     public Double Latitud { get ; set;}
     public Double Longitud { get ; set;}
 
+    public String? Estado { get ; set;}
+
     [Display(Name="Dueño")]
 
     public int PropietarioId{get ; set;}
@@ -44,4 +58,6 @@ public class Inmuebles
 
 
     }
+     
+
 }

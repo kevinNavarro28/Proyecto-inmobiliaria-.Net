@@ -1,16 +1,15 @@
 @model IEnumerable<Inmobiliaria.Models.Inmuebles>
 
+
 @{
-    ViewData["Title"] = "IndexI";
+    ViewData["Title"] = "ObtenerDisponibles";
+    
+
+     
 }
 
-<h1>Lista de Inmuebles  </h1>
+<h1>Lista de Inmuebles Disponibles </h1>
 
-<p>
-    <a asp-action="CrearInmueble" class="btn btn-primary"><i class="fa-solid fa-house"></i>Nuevo inmueble</a>
-    <a asp-action="ObtenerDisponibles" class="btn btn-success"><i class="fa-solid fa-house"></i>Inmuebles Disponibles</a>
-    
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -20,6 +19,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Direccion)
+    
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Uso)
@@ -90,10 +90,8 @@
 				</a>
                   <a href='@Url.Action("BorrarInmueble", new { id = item.Id})' class="btn btn-sm btn-danger">
 										<i class="fa-solid fa-house-medical-circle-xmark"></i>Eliminar
-
-                 <a href='@Url.Action("ContratosPorInmueble", new {InmuebleId  = item.Id})' class="btn btn-sm btn-primary">
-										<i class="fa-solid fa-house-medical-circle-xmark"></i>Contratos
-                
+                                        <a/>
+                    
             </td>
         </tr>
 }    
@@ -108,3 +106,5 @@
         color: red;
     }
 </style>
+ <a asp-action="IndexIn"><i class="fa-solid fa-left-long fa-2xl" style="color: #005eff;"></i></a> 
+</div>

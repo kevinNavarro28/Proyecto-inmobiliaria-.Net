@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - Proyecto_inmobiliaria_.Net</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Proyecto_inmobiliaria_.Net.styles.css" asp-append-version="true" />
+   
     <script src="https://kit.fontawesome.com/26c95223e9.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -19,13 +19,15 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 
-                	@if (!User.Identity.IsAuthenticated)
+                	
+                      
+                       @if (!User.Identity.IsAuthenticated)
                       {	
                       
                         <a class="btn btn-primary py-2 d-none d-md-inline-block float-right" asp-controller="Usuarios" asp-action="Login"><span class="lnr lnr-enter"></span> Acceder</a>
                       }
                       else
-                      {
+                       {
                         <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                             <ul class="navbar-nav flex-grow-1">
                                 <li class="nav-item">
@@ -53,18 +55,19 @@
                                 </li>
                                 }                              
                             </ul>
+                        </div>
                           
-                              <div class="mr-6 text-Black">
+                             <div class="mr-6 text-Black">
                                 <span> Bienvenido  <br> 
-                                @User.Identity.Name
+                                 @User.FindFirst("FullName")?.Value
                                   @if (User.IsInRole("Administrador"))
-                                {<br><span class="mx-auto"> Rol : Administrador</span>}
+                                  {<br><span class="mx-auto">Administrador</span>}
                                 
-                                 else if (User.IsInRole("Empleado"))
+                                  else if (User.IsInRole("Empleado"))
                                 
-                                {  <br>
-                                <span class="mx-auto">Rol : Empleado</span>}
-                              </div>
+                                 {  <br>
+                                 <span class="mx-auto">Empleado</span>}
+                             </div>
                               
                               <div class="dropdown " >
                                   <a class="btn btn-primary dropdown-toggle " href="#" role="button" id="userMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent" data-display="static">
@@ -76,11 +79,12 @@
                                     <a class="dropdown-item text-dark" asp-controller="Usuarios" asp-action="Logout"><i class="lnr lnr-exit"></i> Salir</a>
                                   </div>
                               </div>                        
-                        </div>
-                      }
-                   
+                        
+                      
+                       }
                 
-            </div>
+             </div>
+                      
         </nav>
     </header>
     <div class="container">
@@ -135,14 +139,10 @@
         </main>
     </div>
 
-    <footer class="">
-        <div class="container">
-            &copy; Inmobiliaria Navarro  <a asp-area="" asp-controller="Home" asp-action="Privacy"></a>
-        </div>
-    </footer>
+   
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
+ </body>
+ </html>

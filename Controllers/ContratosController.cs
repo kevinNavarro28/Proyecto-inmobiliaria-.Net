@@ -29,10 +29,13 @@ namespace Inmobiliaria.Controllers
     private readonly RepositorioInmueble RepoInmueble;
     private readonly RepositorioInquilino RepoInquilino;
 
+    private readonly RepositorioPago RepoPago;
+
     public ContratosController(){
         RepoContratos = new RepositorioContrato();
         RepoInmueble = new RepositorioInmueble();
         RepoInquilino = new RepositorioInquilino();
+        RepoPago = new RepositorioPago();
 
     }
         [Authorize]
@@ -50,6 +53,20 @@ namespace Inmobiliaria.Controllers
 
             return View(listaContratos);
         }
+
+
+         [HttpGet]
+    public IActionResult Disponibles(DateTime? fechaInicio, DateTime? fechaFin)
+    {
+        if (!fechaInicio.HasValue || !fechaFin.HasValue)
+        {
+            return View(new List<Inmuebles>());
+        }
+
+        var inmueblesDisponibles = RepoContratos.GetInmueblesDisponibles(fechaInicio.Value, fechaFin.Value);
+        return View(inmueblesDisponibles);
+    }
+
         [Authorize]
         // GET: Contratos/Details/5
         public ActionResult DetalleContrato(int id)
@@ -59,12 +76,35 @@ namespace Inmobiliaria.Controllers
             ViewBag.Inquilinos = RepoInquilino.GetInquilinos();
             return View(contrato);
         }
+
+        [Authorize]
+        public ActionResult ContratosVigentes()
+        {
+            var contratos1 = RepoContratos.ObtenerContratosVigentes();
+            return View(contratos1);
+        }
+        [HttpGet]
+        public IActionResult ObtenerInmueblesDisponibles(DateTime fechaInicio, DateTime fechaFin)
+        {
+            var inmueblesDisponibles = RepoInmueble.GetInmueblesDisponiblesPorFecha(fechaInicio, fechaFin);
+         return Json(inmueblesDisponibles);
+        }
+        [Authorize]
+        public ActionResult PagosPorContrato(int ContratoId){
+            var pagos = RepoPago.ObtenerPagosPorContrato(ContratoId);
+            
+            ViewBag.ContratoId = ContratoId;
+            return View(pagos);
+        }
+        
         [Authorize]
         // GET: Contratos/Create
         public ActionResult CrearContrato()
 
         {   
             try{
+
+                
                 
                 ViewBag.Inmuebles = RepoInmueble.GetInmuebles();
                 ViewBag.Inquilinos = RepoInquilino.GetInquilinos();
@@ -78,37 +118,47 @@ namespace Inmobiliaria.Controllers
         
         }
         [Authorize]
-        // POST: Contratos/Create
-        [HttpPost]
+[HttpPost]
+public ActionResult CrearContrato(Contratos contratos)
+{
+    try
+    {
        
-        public ActionResult CrearContrato(Contratos contratos)
+
+        int res = RepoContratos.Alta(contratos);
+        TempData["Id"] = res;
+
+        if (res > 0)
         {
-            try
-            {
-                int res = RepoContratos.Alta(contratos);
-                 TempData["Id"] = res;
-                if(res>0){
-                    return RedirectToAction(nameof(IndexC));
-                }
-                else{
-                    return View();
-                }
-               
-                
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return RedirectToAction(nameof(IndexC));
         }
+        else
+        {
+            return View(contratos);
+        }
+     }
+     catch (Exception ex)
+     {
+        throw;
+        }
+    }
         [Authorize]
         // GET: Contratos/Edit/5
         public ActionResult EditarContrato(int id)
         {       ViewBag.Inmuebles = RepoInmueble.GetInmuebles();
                 ViewBag.Inquilinos =RepoInquilino.GetInquilinos();
                 var contrato = RepoContratos.ObtenerContrato(id);
-
+                ViewBag.EsRenovacion = false;
             return View(contrato);
+        }
+
+        public IActionResult RenovarContrato(int id)
+        {
+        var contrato = RepoContratos.ObtenerContrato(id); // Obtén el contrato de la base de datos
+             ViewBag.Inmuebles = RepoInmueble.GetInmuebles();
+                ViewBag.Inquilinos =RepoInquilino.GetInquilinos(); // Obtén la lista de inquilinos
+            ViewBag.EsRenovacion = true; // Indica que es una renovación
+         return View("EditarContrato", contrato); // Reutiliza la misma vista
         }
        
         // POST: Contratos/Edit/5
@@ -119,7 +169,23 @@ namespace Inmobiliaria.Controllers
            try
             {
                RepoContratos.Modificar(contratos);
-               TempData["Mensaje"] = "El Inmueble se actualizo correctamente.";
+               TempData["Mensaje"] = "El Contrato se actualizo correctamente.";
+
+                return RedirectToAction(nameof(IndexC));
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
+        [HttpPost]
+        [Authorize]
+        public ActionResult RenovarContrato(int id, Contratos contratos)
+        {
+           try
+            {
+               RepoContratos.Modificar(contratos);
+               TempData["Mensaje"] = "El Contrato se Renovo correctamente.";
 
                 return RedirectToAction(nameof(IndexC));
             }
@@ -135,6 +201,7 @@ namespace Inmobiliaria.Controllers
             ViewBag.Inmuebles = RepoInmueble.GetInmuebles();
             ViewBag.Inquilinos = RepoInquilino.GetInquilinos();
             var contrato = RepoContratos.ObtenerContrato(id);
+            
             return View(contrato);
         }
        
@@ -145,15 +212,35 @@ namespace Inmobiliaria.Controllers
         public ActionResult BorrarContrato(int id, IFormCollection collection)
         {
            try
-            {
-               RepoContratos.Borrar(id);
+    {
+        // Obtener el contrato
+        var contrato = RepoContratos.ObtenerContrato(id);
 
-                return RedirectToAction(nameof(IndexC));
-            }
-            catch(Exception ex)
-            {
-                throw;
-            }
+        if (contrato == null)
+        {
+            TempData["Mensaje"] = "El contrato no fue encontrado.";
+            return RedirectToAction(nameof(IndexC));
+        }
+
+        // Obtener la lista de pagos realizados
+        var pagosRealizados = RepoPago.ObtenerPagosPorContrato(id);
+        var montoAlquiler = contrato.Monto;
+        // Calcular multa
+        var multa = RepoContratos.CalcularMulta(contrato, pagosRealizados);
+
+        // Eliminar el contrato
+        RepoContratos.Baja(id);
+
+        // Mostrar mensaje de confirmación
+        TempData["Mensaje"] = $"El contrato fue terminado. Multa a pagar: {multa:C}.";
+        return RedirectToAction(nameof(IndexC));
+         }
+         catch (Exception ex)
+         {
+        // Registrar o manejar el error
+        TempData["Error"] = "Ocurrió un error al intentar borrar el contrato. Por favor, inténtelo nuevamente.";
+        return RedirectToAction(nameof(IndexC));
+    }
         }
     }
 }

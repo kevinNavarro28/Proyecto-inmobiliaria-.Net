@@ -1,0 +1,79 @@
+@model IEnumerable<Inmobiliaria.Models.Inmuebles>
+
+@{
+    ViewData["Title"] = "IndexI";
+    var Propietario = ViewBag.Propietario;
+}
+
+<h1>Inmuebles de @(Propietario.Nombre +" "+Propietario.Apellido)</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.Tipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Uso)
+            </th>
+              <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+          
+          
+            <th>
+                @Html.DisplayNameFor(model => model.Superficie)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+          
+            <td>
+                @Html.DisplayFor(modelItem => item.Tipo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Uso)
+            </td>
+            <td>
+                @String.Format("${0:N2}", item.Precio)
+            </td>
+
+          
+            <td>
+                @Html.DisplayFor(modelItem => item.Superficie)m²
+            </td>
+
+            
+           
+            <td>
+                <a href='@Url.Action("EditarInmueble","Inmuebles", new { id = item.Id })' class="btn btn-sm btn-info">
+										<i class="fa-solid fa-house-medical-circle-exclamation"></i>Editar
+
+				</a>
+                  <a href='@Url.Action("DetalleInmueble","Inmuebles", new { id = item.Id })' class="btn btn-sm btn-info">
+										<i class="fa-solid fa-neuter fa-lg" style="color: #000000;"></i>Detalles
+
+				</a>
+                  <a href='@Url.Action("BorrarInmueble" ,"Inmuebles",new { id = item.Id})' class="btn btn-sm btn-danger">
+										<i class="fa-solid fa-house-medical-circle-xmark"></i>Eliminar
+            </td>
+        </tr>
+}    
+    </tbody>
+</table>
+<div>
+  <a asp-action="IndexP"><i class="fa-solid fa-left-long fa-2xl" style="color: #005eff;"></i></a> 
+</div>
+

@@ -11,6 +11,7 @@
 
 <p>
     <a asp-action="CrearContrato" class="btn btn-primary"><i class="fa-solid fa-file-contract"></i>Crear Contrato</a>
+     <a asp-action="Contratosvigentes" class="btn btn-success"><i class="fa-solid fa-file-contract"></i>Contratos Vigentes</a> 
 </p>
 <table class="table">
     <thead>
@@ -38,7 +39,7 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Monto)
+               @String.Format("${0:N2}", item.Monto)
             </td>
             <td>
                 @(item.inmueble.Direccion)
@@ -48,16 +49,26 @@
                 @(item.inquilino.Nombre+" "+item.inquilino.Apellido)
             </td>
             <td>
-                   <a href='@Url.Action("EditarContrato", new { id = item.Id })' class="btn btn-sm btn-info">
+                   <a href='@Url.Action("RenovarContrato", new { id = item.Id })' class="btn btn-sm btn-info">
+										<i class="fa-solid fa-file-signature"></i>Renovar
+
+				</a>
+                <a href='@Url.Action("EditarContrato", new { id = item.Id })' class="btn btn-sm btn-success">
 										<i class="fa-solid fa-file-signature"></i>Editar
 
 				</a>
+
                   <a href='@Url.Action("DetalleContrato", new { id = item.Id })' class="btn btn-sm btn-info">
 										<i class="fa-solid fa-neuter fa-lg" style="color: #000000;"></i>Detalles
 
 				</a>
                   <a href='@Url.Action("BorrarContrato", new { id = item.Id})' class="btn btn-sm btn-danger">
-										<i class="fa-solid fa-trash"></i>Eliminar
+										<i class="fa-solid fa-trash"></i>Terminar
+                    </a>
+                    <a href='@Url.Action("PagosPorContrato", new { ContratoId = item.Id})' class="btn btn-sm btn-primary">
+										<i class="fa-solid fa-cash-register"></i>Pagos
+
+                </a>
             </td>
         </tr>
 }

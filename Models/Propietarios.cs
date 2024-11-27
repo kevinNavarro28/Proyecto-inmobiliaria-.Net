@@ -16,6 +16,7 @@ public class Propietarios
     public String ? Email { get ; set;}
     [Display(Name="Dirección")]
     public String ? Direccion { get ; set;}
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime Nacimiento { get ; set;}
 
 

@@ -21,12 +21,14 @@ builder.Services.AddAuthorization(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+ if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Home/Error"); // Redirige a una página de error en caso de excepciones generales
+            app.UseHsts();
+        }
+
+        // Configuración para manejar errores 404
+        app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode=404");  // Redirige a la página de error para 404
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

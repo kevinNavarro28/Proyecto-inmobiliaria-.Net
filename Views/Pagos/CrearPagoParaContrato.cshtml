@@ -1,0 +1,51 @@
+@model Inmobiliaria.Models.Pagos
+
+@{
+    ViewData["Title"] = "Nuevo Pago";
+}
+
+<h1>Registrar Nuevo Pago</h1>
+
+<h4>Pagos</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="NuevoPago">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Fecha_Pago" class="control-label"></label>
+                <input asp-for="Fecha_Pago" class="form-control" type="date" value="@Model.Fecha_Pago.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="Fecha_Pago" class="text-danger"></span>
+            </div>
+          
+            <div class="form-group">
+                <label asp-for="Importe" class="control-label"></label>
+                <input asp-for="Importe" class="form-control" type="number" value="@Model.Importe"/>
+                <span asp-validation-for="Importe" class="text-danger"></span>
+            </div>
+
+            <!-- Campo oculto para el ContratoId -->
+            <input type="hidden" asp-for="ContratoId" />
+
+            <div class="form-group">
+                <input type="submit" value="Pagar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="IndexP"><i class="fa-solid fa-left-long fa-2xl" style="color: #005eff;"></i></a>
+</div>
+<script>
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const fechaPago = new Date(document.querySelector('input[name="Fecha_Pago"]').value);
+        const fechaFinContrato = new Date('@Model.Fecha_Pago.ToString("yyyy-MM-dd")');
+
+        if (fechaPago > fechaFinContrato) {
+            alert("No puedes realizar pagos más allá de la fecha de fin del contrato.");
+            e.preventDefault();
+        }
+    });
+</script>

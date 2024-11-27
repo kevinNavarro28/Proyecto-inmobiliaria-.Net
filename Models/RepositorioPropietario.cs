@@ -88,6 +88,7 @@ public Propietarios ObtenerPropietario(int id)
 
 }
 
+
 public int Alta(Propietarios propietario){
 int res = 0;
 using(MySqlConnection connection = new MySqlConnection(connectionString))

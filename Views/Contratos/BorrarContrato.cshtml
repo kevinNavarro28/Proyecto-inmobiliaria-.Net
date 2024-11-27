@@ -6,7 +6,7 @@
     var listaInquilino = (List<Inmobiliaria.Models.Inquilinos>)ViewBag.Inquilinos;
 }
 
-<h1>Borrar un Contrato</h1>
+<h1>Terminar un Contrato</h1>
 
 
 <div>
@@ -54,7 +54,7 @@
     </dl>
     
     <form asp-action="BorrarContrato">
-        <input type="submit" value="Eliminar" class="btn btn-danger" onclick="return confirm('¿Seguro que desea borrar este Contrato @Model.Id? ')"/> |
+        <input type="submit" value="Terminar" class="btn btn-danger" onclick="return confirm('¿Seguro que desea borrar este Contrato @Model.Id? ')"/> |
        <a asp-action="IndexC"><i class="fa-solid fa-left-long fa-2xl" style="color: #005eff;"></i></a> 
     </form>
 </div>

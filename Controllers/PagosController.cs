@@ -54,6 +54,93 @@ namespace Inmobiliaria.Controllers
             return View(pago);
         }
         [Authorize]
+       public IActionResult NuevoPago(int ContratoId)
+        {
+        var contrato = RepoContratos.ObtenerContrato(ContratoId);
+        var pagosRealizados = RepoPagos.ObtenerPagosPorContrato(ContratoId);
+        DateTime fechaSiguientePago;
+
+    // Si ya hay pagos realizados, toma la fecha del último pago
+        if (pagosRealizados.Any())
+        {
+        fechaSiguientePago = pagosRealizados.Max(p => p.Fecha_Pago).AddMonths(1);
+        }
+        else
+        {
+        // Si no hay pagos, comienza desde la fecha de inicio del contrato
+        fechaSiguientePago = contrato.Fecha_Inicio;
+        }
+
+    // Validar que la fecha del siguiente pago no exceda la duración del contrato
+         if (fechaSiguientePago > contrato.Fecha_Fin)
+        {
+        
+        TempData["Mensaje"]= "No se pueden realizar más pagos. El contrato ya está completamente pagado.";
+        return RedirectToAction("IndexC","Contratos", new { ContratoId });
+        }
+
+    // Crear el modelo para la vista
+        var nuevoPago = new Pagos
+        {
+        ContratoId = ContratoId,
+        Fecha_Pago = fechaSiguientePago,
+        Importe = contrato.Monto
+            };
+
+            return View("CrearPagoParaContrato", nuevoPago);
+        }   
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult NuevoPago(Pagos pago)
+        {
+            try
+        {
+        var contrato = RepoContratos.ObtenerContrato(pago.ContratoId);
+        var pagosRealizados = RepoPagos.ObtenerPagosPorContrato(pago.ContratoId);
+
+        // Validar que el pago sea para el mes siguiente al último pago
+        var ultimaFechaPago = pagosRealizados.Any() ? pagosRealizados.Max(p => p.Fecha_Pago) : contrato.Fecha_Inicio.AddMonths(-1);
+        var fechaEsperada = ultimaFechaPago.AddMonths(1);
+
+        if (pago.Fecha_Pago != fechaEsperada)
+        {
+            ModelState.AddModelError("", $"El pago debe ser para el mes de {fechaEsperada:MMMM yyyy}.");
+            return View("CrearPagoParaContrato", pago);
+        }
+        if(pago.Fecha_Pago == contrato.Fecha_Inicio){
+
+        }
+        // Validar que el pago no exceda la fecha de fin del contrato
+        if (pago.Fecha_Pago > contrato.Fecha_Fin)
+        {
+             TempData["Mensaje"] ="No se pueden realizar pagos fuera de la duración del contrato.";
+             ViewBag.Mensaje = TempData["Mensaje"];
+            return View("PagosPorContratos", pago);
+        }
+
+        // Registrar el pago
+        int res = RepoPagos.Alta(pago);
+
+        if (res > 0)
+        {
+            TempData["Mensaje"] = "El pago se realizó correctamente.";
+            ViewBag.Mensaje = TempData["Mensaje"];
+            return RedirectToAction("PagosPorContrato","Contratos", new { ContratoId = pago.ContratoId });
+        }
+
+        ModelState.AddModelError("", "Error al guardar el pago. Inténtelo nuevamente.");
+        return View("CrearPagoParaContrato", pago);
+        }
+         catch (Exception ex)
+        {
+        ModelState.AddModelError("", "Error al procesar el pago.");
+        return View("CrearPagoParaContrato", pago);
+        }
+        }
+
+
+        [Authorize]
         // GET: Pagos/Create
         public ActionResult CrearPago()
         {

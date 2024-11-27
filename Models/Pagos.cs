@@ -7,6 +7,9 @@ namespace Inmobiliaria.Models;
 public class Pagos
 {
     public int Id { get; set; }
+
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+    [Display(Name = "Fecha de Pago")]
     public DateTime Fecha_Pago { get ; set;}
     public Double Importe { get ; set;}
     
